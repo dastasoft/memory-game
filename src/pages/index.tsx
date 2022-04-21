@@ -4,9 +4,10 @@ import type { NextPage } from 'next'
 
 import Game from '@/components/Game'
 import Intro from '@/components/Intro'
-import SelectDeck, { DECKS } from '@/components/SelectDeck'
+import SelectDeck from '@/components/SelectDeck'
 import SelectDifficulty, { Difficulties } from '@/components/SelectDifficulty'
 import { Deck } from '@/types'
+import { DECKS } from '@/utils/Decks'
 
 enum UIStates {
   IntroScreen,
@@ -16,7 +17,7 @@ enum UIStates {
 }
 
 const Home: NextPage = () => {
-  const [UIState, setUIState] = useState(UIStates.GameScreen)
+  const [UIState, setUIState] = useState(UIStates.IntroScreen)
   const [deck, setDeck] = useState<Deck>(DECKS['Dragon Ball'])
   const [difficulty, setDifficulty] = useState(Difficulties.Normal)
 
@@ -34,7 +35,7 @@ const Home: NextPage = () => {
       return (
         <SelectDeck
           next={() => setUIState(UIStates.GameScreen)}
-          setDeck={setDeck}
+          setDeck={(deckName: string) => setDeck(DECKS[deckName])}
         />
       )
     case UIStates.GameScreen:

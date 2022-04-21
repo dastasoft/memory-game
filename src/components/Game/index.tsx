@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Card as TCard, Deck } from '@/types'
 
 import Card from '../Card'
+import Timer from '../Timer'
 import styles from './Game.module.css'
 
 enum GameStates {
@@ -19,12 +20,15 @@ type Props = {
   selectedDeck: Deck
 }
 
+const initialTimeInSeconds = 10
+
 export default function Game({ selectedDeck }: Props) {
   const [gameState, setGameState] = useState(GameStates.LOADING)
   const [deck, setDeck] = useState<Deck>([])
   const [cardSelectedOne, setCardSelectedOne] = useState<TCard | null>(null)
   const [cardSelectedTwo, setCardSelectedTwo] = useState<TCard | null>(null)
-  const [turns, setTurns] = useState(0)
+  const [matches, setMatches] = useState(0)
+  const [remainingTime, setRemainingTime] = useState(initialTimeInSeconds)
 
   const initDeck = useCallback(() => {
     return [...selectedDeck, ...selectedDeck]
@@ -36,7 +40,8 @@ export default function Game({ selectedDeck }: Props) {
     setDeck(initDeck())
     setCardSelectedOne(null)
     setCardSelectedTwo(null)
-    setTurns(0)
+    setMatches(0)
+    setRemainingTime(initialTimeInSeconds)
     setGameState(GameStates.IDLE)
   }, [initDeck])
 
@@ -44,7 +49,6 @@ export default function Game({ selectedDeck }: Props) {
     setTimeout(() => {
       setCardSelectedOne(null)
       setCardSelectedTwo(null)
-      setTurns((prevTurns: number) => prevTurns + 1)
       setGameState(GameStates.IDLE)
     }, 1000)
   }
@@ -56,6 +60,7 @@ export default function Game({ selectedDeck }: Props) {
     if (cardSelectedOne && cardSelectedTwo) {
       setGameState(GameStates.LOADING)
       if (isSameCard(cardSelectedOne, cardSelectedTwo)) {
+        setMatches((prevValue) => prevValue + 1)
         setDeck((prevCards) =>
           prevCards.map((card) =>
             isSameCard(card, cardSelectedOne)
@@ -82,13 +87,42 @@ export default function Game({ selectedDeck }: Props) {
     initGame()
   }, [initGame])
 
+  const EndScreenButtons = () => {
+    return (
+      <div className="flex-vertical">
+        <button onClick={initGame}>Try again</button>
+        <button>Change Difficulty</button>
+        <button>Change Deck</button>
+      </div>
+    )
+  }
+
   if (gameState === GameStates.COMPLETED) {
-    return <div>Completed</div>
+    if (matches === deck.length / 2) {
+      return (
+        <div>
+          <h2>Completed in {initialTimeInSeconds - remainingTime}s</h2>
+          <EndScreenButtons />
+        </div>
+      )
+    }
+
+    return (
+      <div>
+        <h2>Time out!</h2>
+        <p>{matches} accomplished</p>
+        <EndScreenButtons />
+      </div>
+    )
   }
 
   return (
     <div className={styles.App}>
-      <button onClick={initGame}>Reset</button>
+      <div>
+        <div>Matches: {matches}</div>
+        <button>Sound Icon</button>
+        <button onClick={initGame}>Reset</button>
+      </div>
       <div className={styles['card-grid']}>
         {deck.map((card) => (
           <Card
@@ -104,7 +138,11 @@ export default function Game({ selectedDeck }: Props) {
           />
         ))}
       </div>
-      <p>Turns: {turns}</p>
+      <Timer
+        remainingTime={remainingTime}
+        setRemainingTime={setRemainingTime}
+        onEndAction={() => setGameState(GameStates.COMPLETED)}
+      />
     </div>
   )
 }

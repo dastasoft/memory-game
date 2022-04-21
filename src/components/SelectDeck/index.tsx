@@ -1,17 +1,4 @@
-import { Card } from '@/types'
-
-const DB_CARDS: Card[] = [
-  { imageURL: '/images/dragon-ball/freezer.png' },
-  { imageURL: '/images/dragon-ball/gohan.png' },
-  { imageURL: '/images/dragon-ball/goku-black.png' },
-  { imageURL: '/images/dragon-ball/goku.png' },
-  { imageURL: '/images/dragon-ball/jiren.png' },
-  { imageURL: '/images/dragon-ball/vegeta.png' },
-]
-
-export const DECKS = {
-  'Dragon Ball': DB_CARDS,
-}
+import { DECKS } from '@/utils/Decks'
 
 const SelectDeck = ({ next, setDeck }) => {
   const handleSelect = (e) => {
@@ -20,12 +7,14 @@ const SelectDeck = ({ next, setDeck }) => {
   }
   return (
     <div>
-      <h2>Select theme</h2>
-      {Object.keys(DECKS).map((theme: string) => (
-        <p key={theme} onClick={handleSelect}>
-          {theme}
-        </p>
-      ))}
+      <h2>Select Deck</h2>
+      <div className="flex-vertical">
+        {Object.keys(DECKS).map((theme: string) => (
+          <button key={theme} onClick={handleSelect} value={theme}>
+            {theme}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

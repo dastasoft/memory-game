@@ -25,7 +25,7 @@ export default function Card({
         <img className={styles.front} src={card.imageURL} alt="card front" />
         <img
           className={styles.back}
-          src="/images/dragon-ball/cover.jpg"
+          src={`${card.imageURL.split('/').slice(0, -1).join('/')}/cover.jpg`}
           alt="card back"
           onClick={handleClick}
         />
