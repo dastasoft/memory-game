@@ -1,7 +1,15 @@
 /* eslint-disable no-nested-ternary */
-import { useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 
-const Timer = ({ remainingTime, setRemainingTime, onEndAction }) => {
+const Timer = ({
+  remainingTime,
+  setRemainingTime,
+  onEndAction,
+}: {
+  remainingTime: number
+  setRemainingTime: Dispatch<SetStateAction<number>>
+  onEndAction: () => void
+}) => {
   useEffect(() => {
     const myInterval = setInterval(() => {
       if (remainingTime > 0) {

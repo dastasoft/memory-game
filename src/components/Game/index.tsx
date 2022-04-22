@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Card as TCard, Deck } from '@/types'
 
 import Card from '../Card'
+import { Difficulties } from '../SelectDifficulty'
 import Timer from '../Timer'
 import styles from './Game.module.css'
 
@@ -18,11 +19,17 @@ const isSameCard = (cardOne: TCard, cardTwo: TCard) =>
 
 type Props = {
   selectedDeck: Deck
+  backToDifficulty: () => void
+  backToDeck: () => void
 }
 
-const initialTimeInSeconds = 10
+const initialTimeInSeconds = 500
 
-export default function Game({ selectedDeck }: Props) {
+export default function Game({
+  selectedDeck,
+  backToDifficulty,
+  backToDeck,
+}: Props) {
   const [gameState, setGameState] = useState(GameStates.LOADING)
   const [deck, setDeck] = useState<Deck>([])
   const [cardSelectedOne, setCardSelectedOne] = useState<TCard | null>(null)
@@ -89,10 +96,10 @@ export default function Game({ selectedDeck }: Props) {
 
   const EndScreenButtons = () => {
     return (
-      <div className="flex-vertical">
+      <div className="flex-vertical stack">
         <button onClick={initGame}>Try again</button>
-        <button>Change Difficulty</button>
-        <button>Change Deck</button>
+        <button onClick={backToDifficulty}>Change Difficulty</button>
+        <button onClick={backToDeck}>Change Deck</button>
       </div>
     )
   }
@@ -110,20 +117,27 @@ export default function Game({ selectedDeck }: Props) {
     return (
       <div>
         <h2>Time out!</h2>
-        <p>{matches} accomplished</p>
+        <h3>{matches} accomplished</h3>
         <EndScreenButtons />
       </div>
     )
   }
 
   return (
-    <div className={styles.App}>
-      <div>
+    <div className={styles.Game}>
+      <div className={styles.Header}>
         <div>Matches: {matches}</div>
-        <button>Sound Icon</button>
         <button onClick={initGame}>Reset</button>
       </div>
-      <div className={styles['card-grid']}>
+      <div
+        className={
+          styles[
+            deck.length / 2 === Difficulties.Normal
+              ? 'card-grid'
+              : 'small-card-grid'
+          ]
+        }
+      >
         {deck.map((card) => (
           <Card
             key={card.id}

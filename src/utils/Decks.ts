@@ -15,7 +15,7 @@ const DS_CARDS: Card[] = [
   { imageURL: '/images/demonslayer/muzan.png' },
   { imageURL: '/images/demonslayer/rengoku.jpg' },
   { imageURL: '/images/demonslayer/tanjirou.png' },
-  { imageURL: '/images/demonslayer/zenitsu.png' },
+  { imageURL: '/images/demonslayer/zenitsu.jpg' },
 ]
 
 const AOT_CARDS: Card[] = [
@@ -27,7 +27,7 @@ const AOT_CARDS: Card[] = [
   { imageURL: '/images/attack-on-titan/mikasa.png' },
 ]
 
-const DECKS = {
+const DECKS: { [key: string]: any } = {
   'Dragon Ball': DB_CARDS,
   Demonslayer: DS_CARDS,
   'Attack on Titan': AOT_CARDS,

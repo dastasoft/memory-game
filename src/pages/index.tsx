@@ -39,7 +39,13 @@ const Home: NextPage = () => {
         />
       )
     case UIStates.GameScreen:
-      return <Game selectedDeck={deck.slice(0, difficulty)} />
+      return (
+        <Game
+          selectedDeck={deck.slice(0, difficulty)}
+          backToDifficulty={() => setUIState(UIStates.DifficultyScreen)}
+          backToDeck={() => setUIState(UIStates.DeckScreen)}
+        />
+      )
     default:
       return <Intro next={() => setUIState(UIStates.DifficultyScreen)} />
   }
