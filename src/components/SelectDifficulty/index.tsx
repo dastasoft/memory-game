@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
 
-/* eslint-disable no-restricted-globals */
 export const Difficulties = {
   Easy: 3,
   Normal: 6,
