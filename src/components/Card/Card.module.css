@@ -1,24 +1,39 @@
 .card {
   position: relative;
-  border: 2px solid var(--secondary);
+  border: 2px solid var(--highlight);
   border-radius: 6px;
+  height: 25vw;
+  width: 25vw;
+  background-color: transparent;
+  perspective: 1000px;
+  cursor: pointer;
 }
 
 .card img {
-  width: 100%;
   display: block;
   border-radius: 6px;
 }
 
-.card .front {
-  transform: rotateY(90deg);
+.inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transform-style: preserve-3d;
+}
+
+.front,
+.back {
   position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.flipped .front {
-  transform: rotateY(0deg);
-}
-
-.flipped .back {
-  transform: rotateY(90deg);
+@media only screen and (min-width: 768px) {
+  .card {
+    max-height: 165px;
+    max-width: 165px;
+  }
 }

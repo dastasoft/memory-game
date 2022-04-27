@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { motion, useAnimation } from 'framer-motion'
+
 import { Card as TCard, Deck } from '@/types'
 
 import Card from '../Card'
@@ -7,8 +9,42 @@ import { Difficulties } from '../SelectDifficulty'
 import Timer from '../Timer'
 import styles from './Game.module.css'
 
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      mass: 0.4,
+      damping: 8,
+      when: 'beforeChildren',
+      staggerChildren: 0.2,
+    },
+  },
+  exit: {
+    x: '-100vh',
+    transition: { ease: 'easeInOut' },
+  },
+}
+
+const childVariants = {
+  hidden: {
+    opacity: 0,
+    x: `-${Math.floor(Math.random() * (500 - 100 + 1) + 100)}vw`,
+    y: `-${Math.floor(Math.random() * (500 - 100 + 1) + 100)}vw`,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+  },
+}
+
 enum GameStates {
   LOADING,
+  ANIMATION,
   IDLE,
   COMPLETED,
 }
@@ -31,11 +67,17 @@ export default function Game({
   backToDeck,
 }: Props) {
   const [gameState, setGameState] = useState(GameStates.LOADING)
-  const [deck, setDeck] = useState<Deck>([])
+  const [deck, setDeck] = useState<Deck>(
+    [...selectedDeck, ...selectedDeck]
+      .sort(() => Math.random() - 0.5)
+      .map((card: any) => ({ ...card, id: Math.random(), matched: false }))
+  )
   const [cardSelectedOne, setCardSelectedOne] = useState<TCard | null>(null)
   const [cardSelectedTwo, setCardSelectedTwo] = useState<TCard | null>(null)
   const [matches, setMatches] = useState(0)
   const [remainingTime, setRemainingTime] = useState(initialTimeInSeconds)
+  const [isTimerActive, setIsTimerActive] = useState(false)
+  const controls = useAnimation()
 
   const initDeck = useCallback(() => {
     return [...selectedDeck, ...selectedDeck]
@@ -50,7 +92,8 @@ export default function Game({
     setMatches(0)
     setRemainingTime(initialTimeInSeconds)
     setGameState(GameStates.IDLE)
-  }, [initDeck])
+    controls.start('visible')
+  }, [controls, initDeck])
 
   const completePhase = () => {
     setTimeout(() => {
@@ -91,8 +134,8 @@ export default function Game({
   }, [checkSelection])
 
   useEffect(() => {
-    initGame()
-  }, [initGame])
+    controls.start('visible')
+  }, [controls])
 
   const EndScreenButtons = () => {
     return (
@@ -124,7 +167,21 @@ export default function Game({
   }
 
   return (
-    <div className={styles.Game}>
+    <motion.div
+      className={styles.Game}
+      variants={containerVariants}
+      initial="hidden"
+      animate={controls}
+      exit="exit"
+      onAnimationStart={() => {
+        setGameState(GameStates.ANIMATION)
+        setIsTimerActive(false)
+      }}
+      onAnimationComplete={() => {
+        setGameState(GameStates.IDLE)
+        setIsTimerActive(true)
+      }}
+    >
       <div className={styles.Header}>
         <div>Matches: {matches}</div>
         <button onClick={initGame}>Reset</button>
@@ -139,24 +196,27 @@ export default function Game({
         }
       >
         {deck.map((card) => (
-          <Card
-            key={card.id}
-            card={card}
-            handleSelection={handleSelection}
-            flipped={Boolean(
-              card === cardSelectedOne ||
-                card === cardSelectedTwo ||
-                card.matched
-            )}
-            disabled={gameState !== GameStates.IDLE}
-          />
+          <motion.div key={card.id} variants={childVariants}>
+            <Card
+              card={card}
+              handleSelection={handleSelection}
+              flipped={Boolean(
+                card === cardSelectedOne ||
+                  card === cardSelectedTwo ||
+                  card.matched
+              )}
+              disabled={gameState !== GameStates.IDLE}
+            />
+          </motion.div>
         ))}
       </div>
-      <Timer
-        remainingTime={remainingTime}
-        setRemainingTime={setRemainingTime}
-        onEndAction={() => setGameState(GameStates.COMPLETED)}
-      />
-    </div>
+      {isTimerActive && (
+        <Timer
+          remainingTime={remainingTime}
+          setRemainingTime={setRemainingTime}
+          onEndAction={() => setGameState(GameStates.COMPLETED)}
+        />
+      )}
+    </motion.div>
   )
 }
