@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { AnimatePresence } from 'framer-motion'
 import type { NextPage } from 'next'
 
 import Game from '@/components/Game'
@@ -19,36 +20,36 @@ enum UIStates {
 const Home: NextPage = () => {
   const [UIState, setUIState] = useState(UIStates.IntroScreen)
   const [deck, setDeck] = useState<Deck>(DECKS['Dragon Ball'])
-  const [difficulty, setDifficulty] = useState(Difficulties.Normal)
+  const [difficulty, setDifficulty] = useState(Difficulties.Easy)
 
-  switch (UIState) {
-    case UIStates.IntroScreen:
-      return <Intro next={() => setUIState(UIStates.DifficultyScreen)} />
-    case UIStates.DifficultyScreen:
-      return (
-        <SelectDifficulty
-          next={() => setUIState(UIStates.DeckScreen)}
-          setDifficulty={setDifficulty}
-        />
-      )
-    case UIStates.DeckScreen:
-      return (
-        <SelectDeck
-          next={() => setUIState(UIStates.GameScreen)}
-          setDeck={(deckName: string) => setDeck(DECKS[deckName])}
-        />
-      )
-    case UIStates.GameScreen:
-      return (
-        <Game
-          selectedDeck={deck.slice(0, difficulty)}
-          backToDifficulty={() => setUIState(UIStates.DifficultyScreen)}
-          backToDeck={() => setUIState(UIStates.DeckScreen)}
-        />
-      )
-    default:
-      return <Intro next={() => setUIState(UIStates.DifficultyScreen)} />
-  }
+  return (
+    <div>
+      <AnimatePresence exitBeforeEnter>
+        {UIState === UIStates.IntroScreen && (
+          <Intro next={() => setUIState(UIStates.DifficultyScreen)} />
+        )}
+        {UIState === UIStates.DifficultyScreen && (
+          <SelectDifficulty
+            next={() => setUIState(UIStates.DeckScreen)}
+            setDifficulty={setDifficulty}
+          />
+        )}
+        {UIState === UIStates.DeckScreen && (
+          <SelectDeck
+            next={() => setUIState(UIStates.GameScreen)}
+            setDeck={(deckName: string) => setDeck(DECKS[deckName])}
+          />
+        )}
+        {UIState === UIStates.GameScreen && (
+          <Game
+            selectedDeck={deck.slice(0, difficulty)}
+            backToDifficulty={() => setUIState(UIStates.DifficultyScreen)}
+            backToDeck={() => setUIState(UIStates.DeckScreen)}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  )
 }
 
 export default Home

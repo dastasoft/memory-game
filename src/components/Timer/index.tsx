@@ -1,14 +1,16 @@
 /* eslint-disable no-nested-ternary */
 import { Dispatch, SetStateAction, useEffect } from 'react'
 
-const Timer = ({
-  remainingTime,
-  setRemainingTime,
-  onEndAction,
-}: {
+type TimerProps = {
   remainingTime: number
   setRemainingTime: Dispatch<SetStateAction<number>>
   onEndAction: () => void
+}
+
+const Timer: React.FC<TimerProps> = ({
+  remainingTime,
+  setRemainingTime,
+  onEndAction,
 }) => {
   useEffect(() => {
     const myInterval = setInterval(() => {
