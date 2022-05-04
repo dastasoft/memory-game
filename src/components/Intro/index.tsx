@@ -1,8 +1,21 @@
-import { motion } from 'framer-motion'
+import { useEffect } from 'react'
+
+import { motion, useAnimation } from 'framer-motion'
 
 import { containerVariants, h1Variants, buttonVariants } from './Intro.variants'
 
 const Intro = ({ next }: { next: () => void }) => {
+  const controls = useAnimation()
+
+  useEffect(() => {
+    const sequence = async () => {
+      await controls.start('visible')
+      return controls.start('loop')
+    }
+
+    sequence()
+  }, [controls])
+
   return (
     <motion.div
       className="flex-vertical"
@@ -16,8 +29,7 @@ const Intro = ({ next }: { next: () => void }) => {
         onClick={next}
         variants={buttonVariants}
         initial="hidden"
-        animate="visible"
-        whileHover="hover"
+        animate={controls}
       >
         Play
       </motion.button>

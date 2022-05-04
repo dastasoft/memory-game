@@ -11,4 +11,14 @@ const containerVariants = {
   },
 }
 
-export { containerVariants }
+const resetVariants = {
+  hover: {
+    rotate: 180,
+    transition: {
+      type: 'spring',
+      duration: 1,
+    },
+  },
+}
+
+export { containerVariants, resetVariants }

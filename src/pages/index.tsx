@@ -18,7 +18,7 @@ enum UIStates {
 }
 
 const Home: NextPage = () => {
-  const [UIState, setUIState] = useState(UIStates.IntroScreen)
+  const [UIState, setUIState] = useState(UIStates.GameScreen)
   const [deck, setDeck] = useState<Deck>(DECKS['Dragon Ball'])
   const [difficulty, setDifficulty] = useState(Difficulties.Easy)
 

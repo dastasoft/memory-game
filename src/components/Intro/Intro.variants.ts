@@ -6,7 +6,7 @@ const buttonVariants = {
     x: 0,
     transition: { type: 'spring', delay: 0.3, duration: 1 },
   },
-  hover: {
+  loop: {
     scale: 1.5,
     transition: {
       duration: 0.4,

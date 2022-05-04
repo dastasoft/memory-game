@@ -25,6 +25,21 @@
   justify-content: space-between;
 }
 
+.Reset {
+  width: 45px;
+  height: auto;
+  margin-right: 0.8em;
+  cursor: pointer;
+}
+
+.Reset > path {
+  fill: var(--highlight);
+  stroke: black;
+  stroke-width: 18px;
+  stroke-dasharray: 2, 2;
+  stroke-linejoin: round;
+}
+
 @media only screen and (min-width: 768px) {
   .card-grid {
     grid-template-columns: repeat(4, 1fr);
