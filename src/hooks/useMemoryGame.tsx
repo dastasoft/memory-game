@@ -9,7 +9,7 @@ export enum GameStates {
   COMPLETED,
 }
 
-const initialTimeInSeconds = 120
+const INITIAL_TIME_IN_SECONDS = 60
 const DELAY_TIME = 1000
 
 const checkWinCondition = (deck: Deck) => deck.every((card) => card.matched)
@@ -31,7 +31,7 @@ export default function useMemoryGame(
   const [cardSelectedOne, setCardSelectedOne] = useState<Card | null>(null)
   const [cardSelectedTwo, setCardSelectedTwo] = useState<Card | null>(null)
   const [matches, setMatches] = useState(0)
-  const [remainingTime, setRemainingTime] = useState(initialTimeInSeconds)
+  const [remainingTime, setRemainingTime] = useState(INITIAL_TIME_IN_SECONDS)
   const [isTimerActive, setIsTimerActive] = useState(false)
 
   const initGame = useCallback(() => {
@@ -39,7 +39,7 @@ export default function useMemoryGame(
     setCardSelectedOne(null)
     setCardSelectedTwo(null)
     setMatches(0)
-    setRemainingTime(initialTimeInSeconds)
+    setRemainingTime(INITIAL_TIME_IN_SECONDS)
     setGameState(GameStates.IDLE)
     startAnimation()
   }, [selectedDeck, startAnimation])
@@ -108,7 +108,7 @@ export default function useMemoryGame(
     gameState,
     handleSelection,
     initGame,
-    initialTimeInSeconds,
+    INITIAL_TIME_IN_SECONDS,
     isTimerActive,
     matches,
     onAnimationComplete,

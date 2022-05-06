@@ -29,7 +29,7 @@ const Game: React.FC<GameProps> = ({
     gameState,
     handleSelection,
     initGame,
-    initialTimeInSeconds,
+    INITIAL_TIME_IN_SECONDS,
     isTimerActive,
     matches,
     onAnimationComplete,
@@ -46,7 +46,7 @@ const Game: React.FC<GameProps> = ({
         backToDifficulty={backToDifficulty}
         backToDeck={backToDeck}
         isWin={matches === deck.length / 2}
-        completedTime={initialTimeInSeconds - remainingTime}
+        completedTime={INITIAL_TIME_IN_SECONDS - remainingTime}
         matches={matches}
       />
     )
@@ -58,7 +58,6 @@ const Game: React.FC<GameProps> = ({
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      exit="exit"
     >
       <div className={styles.Header}>
         <div>Matches: {matches}</div>

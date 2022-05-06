@@ -18,7 +18,7 @@ enum UIStates {
 }
 
 const Home: NextPage = () => {
-  const [UIState, setUIState] = useState(UIStates.GameScreen)
+  const [UIState, setUIState] = useState(UIStates.IntroScreen)
   const [deck, setDeck] = useState<Deck>(DECKS['Dragon Ball'])
   const [difficulty, setDifficulty] = useState(Difficulties.Normal)
 
@@ -26,22 +26,28 @@ const Home: NextPage = () => {
     <div>
       <AnimatePresence exitBeforeEnter>
         {UIState === UIStates.IntroScreen && (
-          <Intro next={() => setUIState(UIStates.DifficultyScreen)} />
+          <Intro
+            key={UIStates.IntroScreen}
+            next={() => setUIState(UIStates.DifficultyScreen)}
+          />
         )}
         {UIState === UIStates.DifficultyScreen && (
           <SelectDifficulty
+            key={UIStates.DifficultyScreen}
             next={() => setUIState(UIStates.DeckScreen)}
             setDifficulty={setDifficulty}
           />
         )}
         {UIState === UIStates.DeckScreen && (
           <SelectDeck
+            key={UIStates.DeckScreen}
             next={() => setUIState(UIStates.GameScreen)}
             setDeck={(deckName: string) => setDeck(DECKS[deckName])}
           />
         )}
         {UIState === UIStates.GameScreen && (
           <Game
+            key={UIStates.GameScreen}
             selectedDeck={deck.slice(0, difficulty)}
             backToDifficulty={() => setUIState(UIStates.DifficultyScreen)}
             backToDeck={() => setUIState(UIStates.DeckScreen)}
