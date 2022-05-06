@@ -1,8 +1,3 @@
-.Game {
-  max-width: 860px;
-  margin: 40px auto;
-}
-
 .card-grid {
   margin-top: 40px;
   display: grid;
@@ -19,10 +14,15 @@
   margin-bottom: 1.5em;
 }
 
-.Header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+.small-card-grid > div:nth-child(2),
+.small-card-grid > div:nth-child(5) {
+  justify-self: center;
+}
+
+.small-card-grid > div:nth-child(3),
+.small-card-grid > div:nth-child(6) {
+  justify-self: flex-end;
 }
 
 @media only screen and (min-width: 768px) {
