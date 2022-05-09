@@ -10,15 +10,15 @@ import SelectDifficulty, { Difficulties } from '@/components/SelectDifficulty'
 import { Deck } from '@/types'
 import { DECKS } from '@/utils/Decks'
 
-enum UIStates {
-  IntroScreen,
-  DifficultyScreen,
-  DeckScreen,
-  GameScreen,
-}
+const UIStates = {
+  IntroScreen: 0,
+  DifficultyScreen: 1,
+  DeckScreen: 2,
+  GameScreen: 3,
+} as const
 
 const Home: NextPage = () => {
-  const [UIState, setUIState] = useState(UIStates.IntroScreen)
+  const [UIState, setUIState] = useState<number>(UIStates.IntroScreen)
   const [deck, setDeck] = useState<Deck>(DECKS['Dragon Ball'])
   const [difficulty, setDifficulty] = useState(Difficulties.Normal)
 

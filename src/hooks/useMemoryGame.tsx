@@ -2,12 +2,12 @@ import { useState, useCallback, useEffect } from 'react'
 
 import { Card, Deck } from '@/types'
 
-export enum GameStates {
-  LOADING,
-  ANIMATION,
-  IDLE,
-  COMPLETED,
-}
+export const GameStates = {
+  LOADING: 0,
+  ANIMATION: 1,
+  IDLE: 2,
+  COMPLETED: 3,
+} as const
 
 const INITIAL_TIME_IN_SECONDS = 60
 const DELAY_TIME = 1000
@@ -26,7 +26,7 @@ export default function useMemoryGame(
   selectedDeck: Deck,
   startAnimation: Function
 ) {
-  const [gameState, setGameState] = useState(GameStates.LOADING)
+  const [gameState, setGameState] = useState<number>(GameStates.LOADING)
   const [deck, setDeck] = useState<Deck>(initBoard(selectedDeck))
   const [cardSelectedOne, setCardSelectedOne] = useState<Card | null>(null)
   const [cardSelectedTwo, setCardSelectedTwo] = useState<Card | null>(null)

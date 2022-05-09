@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /api
+Host:  https://anime-memory-game.dastasoft.com
