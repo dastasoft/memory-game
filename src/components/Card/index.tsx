@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion'
-
 import { Card as TCard } from '@/types'
 
 import styles from './Card.module.css'
@@ -23,28 +21,15 @@ export default function Card({
 
   return (
     <div className={styles.card}>
-      <motion.div
-        className={styles.inner}
-        animate={{
-          rotateY: flipped ? '180deg' : '0deg',
-          transition: {
-            duration: 0.8,
-          },
-        }}
-      >
-        <motion.img
-          className={styles.front}
-          src={card.imageURL}
-          style={{ rotateY: '180deg' }}
-          alt="card front"
-        />
+      <div className={`${styles.inner} ${flipped ? styles.flipped : ''}`}>
+        <img className={styles.front} src={card.imageURL} alt="card front" />
         <img
           src={`${card.imageURL.split('/').slice(0, -1).join('/')}/cover.jpg`}
           alt="card back"
           className={styles.back}
           onClick={handleClick}
         />
-      </motion.div>
+      </div>
     </div>
   )
 }

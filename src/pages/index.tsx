@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-import { AnimatePresence } from 'framer-motion'
 import type { NextPage } from 'next'
 
 import Game from '@/components/Game'
@@ -24,36 +23,28 @@ const Home: NextPage = () => {
 
   return (
     <div>
-      <AnimatePresence exitBeforeEnter>
-        {UIState === UIStates.IntroScreen && (
-          <Intro
-            key={UIStates.IntroScreen}
-            next={() => setUIState(UIStates.DifficultyScreen)}
-          />
-        )}
-        {UIState === UIStates.DifficultyScreen && (
-          <SelectDifficulty
-            key={UIStates.DifficultyScreen}
-            next={() => setUIState(UIStates.DeckScreen)}
-            setDifficulty={setDifficulty}
-          />
-        )}
-        {UIState === UIStates.DeckScreen && (
-          <SelectDeck
-            key={UIStates.DeckScreen}
-            next={() => setUIState(UIStates.GameScreen)}
-            setDeck={(deckName: string) => setDeck(DECKS[deckName])}
-          />
-        )}
-        {UIState === UIStates.GameScreen && (
-          <Game
-            key={UIStates.GameScreen}
-            selectedDeck={deck.slice(0, difficulty)}
-            backToDifficulty={() => setUIState(UIStates.DifficultyScreen)}
-            backToDeck={() => setUIState(UIStates.DeckScreen)}
-          />
-        )}
-      </AnimatePresence>
+      {UIState === UIStates.IntroScreen && (
+        <Intro next={() => setUIState(UIStates.DifficultyScreen)} />
+      )}
+      {UIState === UIStates.DifficultyScreen && (
+        <SelectDifficulty
+          next={() => setUIState(UIStates.DeckScreen)}
+          setDifficulty={setDifficulty}
+        />
+      )}
+      {UIState === UIStates.DeckScreen && (
+        <SelectDeck
+          next={() => setUIState(UIStates.GameScreen)}
+          setDeck={(deckName: string) => setDeck(DECKS[deckName])}
+        />
+      )}
+      {UIState === UIStates.GameScreen && (
+        <Game
+          selectedDeck={deck.slice(0, difficulty)}
+          backToDifficulty={() => setUIState(UIStates.DifficultyScreen)}
+          backToDeck={() => setUIState(UIStates.DeckScreen)}
+        />
+      )}
     </div>
   )
 }

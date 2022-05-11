@@ -1,22 +1,14 @@
-import { useEffect } from 'react'
-
-import { AnimationControls, motion } from 'framer-motion'
-
 import Card from '@/components/Card'
 import { Difficulties } from '@/components/SelectDifficulty'
 import { Card as TCard } from '@/types'
 
 import styles from './Board.module.css'
-import { containerVariants, childVariants } from './Board.variants'
 
 type BoardProps = {
   deck: TCard[]
   handleSelection: (card: TCard) => void
   flippedCards: (TCard | null)[]
   disabled: boolean
-  controls: AnimationControls
-  onAnimationStart: () => void
-  onAnimationComplete: () => void
 }
 
 const Board: React.FC<BoardProps> = ({
@@ -24,20 +16,9 @@ const Board: React.FC<BoardProps> = ({
   handleSelection,
   flippedCards,
   disabled,
-  controls,
-  onAnimationStart,
-  onAnimationComplete,
 }) => {
-  useEffect(() => {
-    controls.start('visible')
-  }, [controls])
-
   return (
-    <motion.div
-      initial="hidden"
-      animate={controls}
-      onAnimationStart={onAnimationStart}
-      onAnimationComplete={onAnimationComplete}
+    <div
       className={
         styles[
           deck.length / 2 === Difficulties.Normal
@@ -45,10 +26,9 @@ const Board: React.FC<BoardProps> = ({
             : 'small-card-grid'
         ]
       }
-      variants={containerVariants}
     >
       {deck.map((card) => (
-        <motion.div key={card.id} variants={childVariants}>
+        <div key={card.id}>
           <Card
             card={card}
             handleSelection={handleSelection}
@@ -60,9 +40,9 @@ const Board: React.FC<BoardProps> = ({
             )}
             disabled={disabled}
           />
-        </motion.div>
+        </div>
       ))}
-    </motion.div>
+    </div>
   )
 }
 

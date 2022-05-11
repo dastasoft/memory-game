@@ -4,9 +4,8 @@ import { Card, Deck } from '@/types'
 
 export const GameStates = {
   LOADING: 0,
-  ANIMATION: 1,
-  IDLE: 2,
-  COMPLETED: 3,
+  IDLE: 1,
+  COMPLETED: 2,
 } as const
 
 const INITIAL_TIME_IN_SECONDS = 60
@@ -22,10 +21,7 @@ const initBoard = (deck: Deck): Deck =>
     .sort(() => Math.random() - 0.5)
     .map((card: any) => ({ ...card, id: Math.random(), matched: false }))
 
-export default function useMemoryGame(
-  selectedDeck: Deck,
-  startAnimation: Function
-) {
+export default function useMemoryGame(selectedDeck: Deck) {
   const [gameState, setGameState] = useState<number>(GameStates.LOADING)
   const [deck, setDeck] = useState<Deck>(initBoard(selectedDeck))
   const [cardSelectedOne, setCardSelectedOne] = useState<Card | null>(null)
@@ -41,8 +37,7 @@ export default function useMemoryGame(
     setMatches(0)
     setRemainingTime(INITIAL_TIME_IN_SECONDS)
     setGameState(GameStates.IDLE)
-    startAnimation()
-  }, [selectedDeck, startAnimation])
+  }, [selectedDeck])
 
   const completePhase = () => {
     setTimeout(() => {
@@ -79,16 +74,6 @@ export default function useMemoryGame(
     }
   }, [cardSelectedOne, cardSelectedTwo])
 
-  const onAnimationStart = () => {
-    setGameState(GameStates.ANIMATION)
-    setIsTimerActive(false)
-  }
-
-  const onAnimationComplete = () => {
-    setGameState(GameStates.IDLE)
-    setIsTimerActive(true)
-  }
-
   const onTimerEnd = () => {
     setGameState(GameStates.COMPLETED)
   }
@@ -101,6 +86,11 @@ export default function useMemoryGame(
     checkSelection()
   }, [checkSelection])
 
+  useEffect(() => {
+    setGameState(GameStates.IDLE)
+    setIsTimerActive(true)
+  }, [])
+
   return {
     cardSelectedOne,
     cardSelectedTwo,
@@ -111,8 +101,6 @@ export default function useMemoryGame(
     INITIAL_TIME_IN_SECONDS,
     isTimerActive,
     matches,
-    onAnimationComplete,
-    onAnimationStart,
     onTimerEnd,
     remainingTime,
     setRemainingTime,

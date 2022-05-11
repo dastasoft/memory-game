@@ -1,8 +1,4 @@
-import { motion } from 'framer-motion'
-
 import ListedButton from '@/components/ListedButton'
-
-import { childVariants } from '../Board/Board.variants'
 
 type GameOverProps = {
   initGame: () => void
@@ -24,17 +20,17 @@ const GameOver: React.FC<GameOverProps> = ({
   const Buttons = () => {
     return (
       <div className="flex-vertical stack">
-        <motion.div variants={childVariants}>
+        <div>
           <ListedButton onClick={initGame}>Try again</ListedButton>
-        </motion.div>
-        <motion.div variants={childVariants}>
+        </div>
+        <div>
           <ListedButton onClick={backToDifficulty}>
             Change Difficulty
           </ListedButton>
-        </motion.div>
-        <motion.div variants={childVariants}>
+        </div>
+        <div>
           <ListedButton onClick={backToDeck}>Change Deck</ListedButton>
-        </motion.div>
+        </div>
       </div>
     )
   }
