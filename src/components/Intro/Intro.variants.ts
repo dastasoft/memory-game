@@ -36,7 +36,6 @@ const pathVariants = {
     pathLength: 0,
   },
   visible: {
-    opacity: 1,
     pathLength: 1,
     transition: {
       duration: 4,
