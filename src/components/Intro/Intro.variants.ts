@@ -31,18 +31,4 @@ const h1Variants = {
   },
 }
 
-const pathVariants = {
-  hidden: {
-    pathLength: 0,
-  },
-  visible: {
-    pathLength: 1,
-    transition: {
-      duration: 4,
-      yoyo: Infinity,
-      ease: 'easeInOut',
-    },
-  },
-}
-
-export { buttonVariants, containerVariants, h1Variants, pathVariants }
+export { buttonVariants, containerVariants, h1Variants }
